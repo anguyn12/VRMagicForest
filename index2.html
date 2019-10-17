@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>DawnVR Project</title>
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
+    <script src="aframe-animation-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-look-at-component@0.5.1/dist/aframe-look-at-component.min.js"></script>
+    <script src="main.js"></script>
+    <script type="text/javascript">
+    AFRAME.registerComponent('image-grid', {
+      schema: {},
+      init: function () {
+        var fuse = document.querySelector('#fuse-cursor');
+        var fuseProgress = document.querySelector('#fuse-progress');
+        var camera = document.querySelector('#main-camera-wrapper');
+        var images = document.querySelectorAll('a-image');
+        var CAMERA_Z = 2.7;
+
+        fuse.addEventListener('fusing', function (e) {
+            fuseProgress.emit('fusing');
+        });
+
+        images.forEach(function(image) {
+          image.setAttribute('look-at', '[camera]');
+
+          image.addEventListener('click', function(e) {
+            var position = this.getAttribute('position')
+            camera.setAttribute('animation', {
+              to: {x: position.x, y: position.y, z: CAMERA_Z}
+            })
+            camera.emit('imageClicked')
+          })
+        })
+      }
+    });
+    </script>
+  </head>
+
+  <body>
+    <div id="splash">
+      <div class="loading"></div>
+    </div>
+
+    <a-scene image-grid fog="color: #ffffff; far: 11.60; type: linear;">
+      <a-assets>
+
+      </a-assets>
+
+      <a-entity id="main-camera-wrapper" position="0.12 4.14 4.93" rotation="0 -0.35 0"
+                animation="property: position; easing: easeOutQuad; startEvents: imageClicked;">
+        <a-camera id="main-camera" user-height="0" visible="true" wasd-controls="enabled: false;"
+                  cursor="rayOrigin: mouse;" raycaster="objects: .clickable">
+          <a-cursor id="fuse-cursor" fuse="true" geometry="radiusInner: 0.02; radiusOuter: 0.03; thetaLength: 360; thetaStart: 90;"
+                    color="#232323" opacity="1" repeat="1 1" shader="flat" position="0 0 -1" objects=".clickable"
+                    rotation="0 0 0" scale="1 1 1" visible="true"></a-cursor>
+          <a-ring id="fuse-progress" radius-inner="0.02" radius-outer="0.03" theta-length="360"
+                  theta-start="90" color="#FFE066" opacity="0" repeat="1 1" shader="flat" position="0 0 -0.999"
+                  rotation="0 0 0" scale="1 1 1" visible="true" class="clickable" animation="delay: 0; dir: normal; dur: 1500; easing: linear; loop: 0; property: geometry.thetaLength; startEvents: fusing; to: 0; from: 360;"
+                  animation__1="delay: 0; dir: normal; dur: 500; easing: linear; loop: 0; property: opacity; startEvents: fusing; to: 1; from: 0;"></a-ring>
+        </a-camera>
+      </a-entity>
+
+      <a-sky id="sky" position="0 0 0" rotation="0 0 0" scale="-1 1 1" radius="5000" segments-width="64"
+      segments-height="20" color="#072036" opacity="1" flat-shading="true" shader="standard"
+      side="double" repeat="1 1" visible="true"></a-sky>
+
+      <a-text id="headline" position="0.00 4.75 -0.3" rotation="0 0 0" scale="1 1 1"
+      value="DAWNVR.io" font="https://cdn.glitch.com/13258c51-0acc-4d99-ab9f-85f8eec172c6%2FOswald-Bold.fnt?1506384504220" font-image="https://cdn.glitch.com/13258c51-0acc-4d99-ab9f-85f8eec172c6%2FOswald-Bold.png?1506384504242" align="center" opacity="1"
+      color="#FFE066" wrap-count="36" letter-spacing="16.20" line-height="64" width="4.00"
+      height="0" side="double" anchor="center" visible="true"></a-text>
+      <a-image id="logo" color="#ffffff" alphaTest="1" visible="false" class="clickable" position="0.00 4.75 -0.3" ></a-image>
+
+      <a-image id="story1" class="clickable" position="0.00 2.20 -2.00" rotation="0 0 0" scale="1 1 1"
+      width="4" height="3" color="#999" opacity="1" shader="flat" side="double"
+      metalness="0.5" roughness="1" repeat="1 1" visible="true"></a-image>
+
+      <a-image id="story2" class="clickable" position="0.00 7.90 -2.00" rotation="0 0 0" scale="1 1 1"
+      width="4" height="3" shader="flat" side="double" color="#999"
+      metalness="0.5" roughness="1" repeat="1 1" visible="true"></a-image>
+
+      <a-image id="story3" class="clickable" position="-5.40 2.20 -2.00" rotation="0.00 0 0.00"
+      scale="1 1 1" width="3" height="4" shader="flat" side="double"
+      color="#999" metalness="0.5" roughness="1" repeat="1 1" visible="true"></a-image>
+
+      <a-image id="story4" class="clickable" position="-5.40 7.60 -2.00" rotation="0.00 0 0.00"
+      scale="1 1 1" width="3" height="4" shader="flat" side="double"
+      color="#999" metalness="0.5" roughness="1" repeat="1 1" visible="true"></a-image>
+
+      <a-text id="story1-caption" position="0.00 1.90 -0.30" rotation="0 0 0" scale="1 1 1"
+      value="Story Name" font="https://cdn.glitch.com/13258c51-0acc-4d99-ab9f-85f8eec172c6%2FOswald-Bold.fnt?1506384504220" font-image="https://cdn.glitch.com/13258c51-0acc-4d99-ab9f-85f8eec172c6%2FOswald-Bold.png?1506384504242" align="center" opacity="1"
+      color="#232323" wrap-count="36" letter-spacing="16.20" line-height="64" width="4.00"
+      height="0" side="double" anchor="center" visible="true"></a-text>
+
+      <a-text id="story2-caption" position="0.00 6.7 -0.30" rotation="0 0 0" scale="1 1 1"
+      value="Story Name" font="https://cdn.glitch.com/13258c51-0acc-4d99-ab9f-85f8eec172c6%2FOswald-Bold.fnt?1506384504220" font-image="https://cdn.glitch.com/13258c51-0acc-4d99-ab9f-85f8eec172c6%2FOswald-Bold.png?1506384504242" align="center" opacity="1" color="#232323"
+      wrap-count="36" letter-spacing="16.20" line-height="64" width="4.00" height="0" side="double"
+      anchor="center" visible="true"></a-text>
+
+      <a-text id="story3-caption" position="-5.4 1.90 -0.30" rotation="0 0 0" scale="1 1 1"
+      value="Story Name" font="https://cdn.glitch.com/13258c51-0acc-4d99-ab9f-85f8eec172c6%2FOswald-Bold.fnt?1506384504220" font-image="https://cdn.glitch.com/13258c51-0acc-4d99-ab9f-85f8eec172c6%2FOswald-Bold.png?1506384504242" align="center" opacity="1" color="#232323"
+      wrap-count="36" letter-spacing="16.20" line-height="64" width="4.00" height="0" side="double"
+      anchor="center" visible="true"></a-text>
+
+      <a-text id="story4-caption" position="-5.40 6.70 -0.30" rotation="0 0 0" scale="1 1 1"
+      value="Story Name" font="https://cdn.glitch.com/13258c51-0acc-4d99-ab9f-85f8eec172c6%2FOswald-Bold.fnt?1506384504220" font-image="https://cdn.glitch.com/13258c51-0acc-4d99-ab9f-85f8eec172c6%2FOswald-Bold.png?1506384504242" align="center" opacity="1"
+      color="#232323" wrap-count="36" letter-spacing="16.20" line-height="64" width="4.00"
+      height="0" side="double" anchor="center" visible="true"></a-text>
+
+      <a-text id="story5-caption" position="5.3 1.90 -0.30" rotation="0 0 0"
+      scale="1 1 1" value="Story Name" font="https://cdn.glitch.com/13258c51-0acc-4d99-ab9f-85f8eec172c6%2FOswald-Bold.fnt?1506384504220" font-image="https://cdn.glitch.com/13258c51-0acc-4d99-ab9f-85f8eec172c6%2FOswald-Bold.png?1506384504242" align="center"
+      opacity="1" color="#232323" wrap-count="36" letter-spacing="16.20" line-height="64"
+      width="4.00" height="0" side="double" anchor="center" visible="true"></a-text>
+
+      <a-text id="story6-caption" position="5.30 6.7 -0.30" rotation="0 0 0"
+      scale="1 1 1" value="Story Name" font="https://cdn.glitch.com/13258c51-0acc-4d99-ab9f-85f8eec172c6%2FOswald-Bold.fnt?1506384504220" font-image="https://cdn.glitch.com/13258c51-0acc-4d99-ab9f-85f8eec172c6%2FOswald-Bold.png?1506384504242" align="center"
+      opacity="1" color="#232323" wrap-count="36" letter-spacing="16.20" line-height="64"
+      width="4.00" height="0" side="double" anchor="center" visible="true"></a-text>
+
+      <a-image id="story5" class="clickable" position="5.50 1.51 -2.00" rotation="0 0 0" scale="1 1 1"
+      width="3" height="4" opacity="1" shader="flat" side="double" color="#999"
+      metalness="0.5" roughness="1" repeat="1 1" visible="true"></a-image>
+
+      <a-image id="story6" class="clickable" position="5.50 7.50 -2.00" rotation="0 0 0" scale="1 1 1"
+      width="3" height="4" opacity="1" shader="flat" side="double" color="#999"
+      metalness="0.5" roughness="1" repeat="1 1" visible="true"></a-image>
+    </a-scene>
+  </body>
+
+</html>
